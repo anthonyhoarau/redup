@@ -1,0 +1,5 @@
+export enum RedmineStatus {
+  REVIEW_AVAILABLE = 14,
+  REVIEW_IN_PROGRESS = 16,
+  REVIEW_COMPLETED = 15,
+}

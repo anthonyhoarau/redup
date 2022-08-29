@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "importHelpers": true,
+    "outDir": "dist",
+    "rootDir": "src",
+    "strict": true,
+    "target": "ES2020",
+    "module": "CommonJS"
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": ["**/*.spec.ts"]
+}
