@@ -3,8 +3,9 @@
   "version": "0.0.1",
   "description": "CLI tools - Bridge between Upsource and Redmine through git repos",
   "type": "module",
-  "main": "./src/index.js",
-  "exports": "./src/index.js",
+  "bin": {
+    "redup": "./bin/index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
