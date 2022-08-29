@@ -1,0 +1,34 @@
+{
+  "name": "redup",
+  "version": "0.0.1",
+  "description": "CLI tools - Bridge between Upsource and Redmine through git repos",
+  "type": "module",
+  "main": "./src/index.js",
+  "exports": "./src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anthonyhoarau/redup.git"
+  },
+  "author": "Anthony Hoarau",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/anthonyhoarau/redup/issues"
+  },
+  "homepage": "https://github.com/anthonyhoarau/redup#readme",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "keywords": [
+    "cli",
+    "Tool",
+    "Redmine",
+    "Upsource"
+  ],
+  "dependencies": {
+    "chalk": "^5.0.1",
+    "commander": "^9.4.0"
+  }
+}
