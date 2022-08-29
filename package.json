@@ -1,5 +1,5 @@
 {
-  "name": "redup",
+  "name": "@llioss/redup",
   "version": "0.0.1",
   "description": "CLI tools - Bridge between Upsource and Redmine through git repos",
   "type": "module",
@@ -31,5 +31,12 @@
   "dependencies": {
     "chalk": "^5.0.1",
     "commander": "^9.4.0"
+  },
+  "devDependencies": {
+    "eslint": "8.22.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.2.5",
+    "eslint-plugin-promise": "^6.0.1"
   }
 }
