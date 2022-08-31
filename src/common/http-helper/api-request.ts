@@ -18,12 +18,12 @@ export async function apiRest<R = any, T = any> (request: ApiRequest<R>): Promis
   }
   const requestOption = { ...defaultRequest, ...request }
 
-  return await new Promise((resolve, reject) => {
-    const requestData = JSON.stringify(request.data)
+  return await new Promise<T>((resolve, reject) => {
+    const requestData = request.data ? JSON.stringify(request.data) : null
 
     const defaultHeaders = {
       'Content-Type': 'application/json',
-      'Content-Length': requestData.length
+      'Content-Length': requestData ? requestData.length : 0
     }
     const headers = { ...defaultHeaders, ...requestOption?.customHeader }
 
@@ -61,13 +61,15 @@ export async function apiRest<R = any, T = any> (request: ApiRequest<R>): Promis
         }
         resolve(body)
       })
-
-      httpRequest.on('error', error => {
-        return reject(error)
-      })
-
-      httpRequest.write(requestData)
-      httpRequest.end()
     })
+
+    httpRequest.on('error', error => {
+      return reject(error)
+    })
+
+    if (requestData) {
+      httpRequest.write(requestData)
+    }
+    httpRequest.end()
   })
 }

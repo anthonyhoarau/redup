@@ -27,7 +27,9 @@ async function createReview (program: Command): Promise<void> {
       notes: `Code review available at https://${process.env.UPSOURCE_HOST}/review/reviewId`,
       status_id: RedmineStatus.REVIEW_AVAILABLE
     })
+
+    console.log(chalk.red.bold(`Redmine updated: https://${process.env.REDMINE_HOST}/issues/${redmineId}`))
   } catch (e) {
-    program.error(`Unable to update redmine https://${process.env.REDMINE_HOST}/issue/${redmineId}`)
+    program.error(chalk.red.bold(`Unable to update redmine https://${process.env.REDMINE_HOST}/issues/${redmineId}`))
   }
 }
