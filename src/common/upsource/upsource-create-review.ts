@@ -5,9 +5,9 @@ export default async function upsourceCreateBranchReview (branchName: string): P
   console.log(chalk.gray(`Creating Upsource review for branch ${branchName}`))
 
   return await new Promise((resolve, reject) => {
-    const hostname = process.env.UPSOURCE_HOST as string
-    const projectId = process.env.UPSOURCE_PROJECT_ID as string
-    const upsourceUserToken = process.env.UPSOURCE_USER_API_TOKEN as string
+    const hostname = process.env.UPSOURCE_HOST
+    const projectId = process.env.UPSOURCE_PROJECT_ID
+    const upsourceUserToken = process.env.UPSOURCE_USER_API_TOKEN
 
     const requestData = JSON.stringify({
       projectId,

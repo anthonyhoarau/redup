@@ -10,19 +10,24 @@ export default function commandCreateReview (): Command {
   const program = new Command('create-review')
   program
     .description('Create a review in Upsource based on latest branch revision number')
-    .action(createReview)
+    .action(async () => await createReview(program))
   return program
 }
 
-async function createReview (): Promise<void> {
+async function createReview (program: Command): Promise<void> {
   const branchName = await currentBranchName()
   console.log(chalk.blue(`Create review for branch: ${branchName}`))
 
   // await upsourceCreateBranchReview(branchName)
 
   const redmineId = extractRedmineIdFromFeatureBranch(branchName)
-  await redmineUpdateIssue(redmineId, {
-    notes: `Code review available at https://${process.env.UPSOURCE_HOST as string}/review/reviewId`,
-    status_id: RedmineStatus.REVIEW_AVAILABLE
-  })
+
+  try {
+    await redmineUpdateIssue(redmineId, {
+      notes: `Code review available at https://${process.env.UPSOURCE_HOST}/review/reviewId`,
+      status_id: RedmineStatus.REVIEW_AVAILABLE
+    })
+  } catch (e) {
+    program.error(`Unable to update redmine https://${process.env.REDMINE_HOST}/issue/${redmineId}`)
+  }
 }
