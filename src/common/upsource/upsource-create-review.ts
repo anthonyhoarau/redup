@@ -2,6 +2,8 @@ import * as chalk from 'chalk'
 import * as https from 'https'
 
 export default async function upsourceCreateBranchReview (branchName: string): Promise<void> {
+  console.log(chalk.gray(`Creating Upsource review for branch ${branchName}`))
+
   return await new Promise((resolve, reject) => {
     const hostname = process.env.UPSOURCE_HOST as string
     const projectId = process.env.UPSOURCE_PROJECT_ID as string
@@ -24,8 +26,6 @@ export default async function upsourceCreateBranchReview (branchName: string): P
         Authorization: `Bearer ${upsourceUserToken}`
       }
     }
-
-    console.log(chalk.gray(`Creating Upsource review for branch ${branchName}`))
 
     const request = https.request(requestOption, response => {
       response.on('data', rawData => {

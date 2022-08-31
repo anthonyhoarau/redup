@@ -1,6 +1,7 @@
 import { RedmineIssueRequest } from './types/redmine-issue-request'
 import * as chalk from 'chalk'
 import * as https from 'https'
+import { IncomingMessage } from 'http'
 
 export default async function redmineUpdateIssue (issueId: string, issue: RedmineIssueRequest): Promise<void> {
   return await new Promise((resolve, reject) => {
@@ -20,23 +21,36 @@ export default async function redmineUpdateIssue (issueId: string, issue: Redmin
         'Content-Type': 'application/json',
         'Content-Length': requestData.length,
         'X-Redmine-API-Key': redmineUserToken
-      }
+      },
+      rejectUnauthorized: process.env.REJECT_UNAUTHORIZED_SSL == null || process.env.REJECT_UNAUTHORIZED_SSL === 'true'
     }
 
     console.log(chalk.gray(`Updating Redmine status of issue: ${issueId}`))
 
-    const request = https.request(requestOption, response => {
-      response.on('data', rawData => {
-        const response = JSON.parse(rawData.toString())
-        console.log(response)
-        return resolve()
-        /* if (response?.error) {
-          program.error(chalk.red.bold(response?.error.message))
-        }
+    const request = https.request(requestOption, (res: IncomingMessage) => {
+      // reject on bad status
+      const statusCode = +res.statusCode
+      if (statusCode < 200 || statusCode >= 300) {
+        return reject(new Error(`statusCode=${statusCode}`))
+      }
 
-        const reviewId = response.result.reviewId.reviewId
-        console.log(chalk.green.bold(`Review ${reviewId} successfully created`))
-        console.log(chalk.green.bold(`Review link: https://${UPSOURCE_HOST}/${upsourceProjectId}/review/${reviewId}`)) */
+      // cumulate data
+      const bodyChunk = []
+      res.on('data', function (chunk: unknown) {
+        bodyChunk.push(chunk)
+      })
+
+      // resolve on end
+      res.on('end', function () {
+        let body: {[key: string]: unknown} | null = null
+        try {
+          if (bodyChunk.length > 0) {
+            body = JSON.parse(Buffer.concat(bodyChunk).toString())
+          }
+        } catch (e) {
+          reject(e)
+        }
+        resolve()
       })
     })
 

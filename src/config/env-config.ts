@@ -1,22 +1,20 @@
 import * as fs from 'node:fs'
 import * as path from 'node:path'
 import { parseEnv } from './env-parser'
-import { KeyValue } from '../common/interfaces/core'
+import { Command } from 'commander'
+import * as chalk from 'chalk'
 
 const envFile = '.reduprc'
 
-export function envConfig (): {parsed: KeyValue} | {error: unknown} {
+export function envConfig (command: Command): void {
   const encoding = 'utf-8'
   const envPath = path.resolve(process.cwd(), envFile)
 
   try {
     const parsed = parseEnv(fs.readFileSync(envPath, { encoding }))
-
     overrideProcessEnv(parsed)
-
-    return { parsed }
   } catch (e) {
-    return { error: e }
+    command.error(chalk.red.bold(`Unable to read file at location: ${envPath}`))
   }
 }
 
