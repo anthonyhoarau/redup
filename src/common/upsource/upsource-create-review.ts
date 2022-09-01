@@ -1,56 +1,33 @@
 import * as chalk from 'chalk'
-import * as https from 'https'
+import { apiRest } from '../http-helper/api-request'
+import { UpsourceCreateReviewRequest } from './types/upsource-request'
+import { UpsourceApiResponse } from './types/upsource-response'
+import { Command } from 'commander'
 
-export default async function upsourceCreateBranchReview (branchName: string): Promise<void> {
+export default async function upsourceCreateMergeReview (program: Command, branchName: string): Promise<void> {
+  const hostname = process.env.UPSOURCE_HOST
+  const projectId = process.env.UPSOURCE_PROJECT_ID
+  const upsourceUserToken = process.env.UPSOURCE_USER_API_TOKEN
+
   console.log(chalk.gray(`Creating Upsource review for branch ${branchName}`))
 
-  return await new Promise((resolve, reject) => {
-    const hostname = process.env.UPSOURCE_HOST
-    const projectId = process.env.UPSOURCE_PROJECT_ID
-    const upsourceUserToken = process.env.UPSOURCE_USER_API_TOKEN
-
-    const requestData = JSON.stringify({
-      projectId,
-      branch: branchName,
-      mergeToBranch: 'develop'
-    })
-
-    const requestOption = {
-      hostname,
-      path: '/~rpc/createReview',
-      method: 'POST',
-      port: 443,
-      headers: {
-        'Content-Type': 'application/json',
-        'Content-Length': requestData.length,
-        Authorization: `Bearer ${upsourceUserToken}`
-      }
+  const apiResponse = await apiRest<UpsourceCreateReviewRequest, UpsourceApiResponse>({
+    hostname,
+    path: '/~rpc/createReview',
+    type: 'POST',
+    data: { projectId, branch: branchName, mergeToBranch: 'develop' },
+    customHeader: {
+      Authorization: `Bearer ${upsourceUserToken}`
     }
-
-    const request = https.request(requestOption, response => {
-      response.on('data', rawData => {
-        const responseData = JSON.parse(rawData.toString())
-        console.log(responseData)
-
-        // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-        if (responseData?.error) {
-          console.log(chalk.red.bold(responseData.error.message))
-          return reject(responseData.error)
-        }
-
-        const reviewId = responseData.result.reviewId.reviewId as string
-        console.log(chalk.green.bold(`Review ${reviewId} successfully created`))
-        console.log(chalk.green.bold(`Review link: https://${hostname}/${projectId}/review/${reviewId}`))
-        return resolve()
-      })
-    })
-
-    request.on('error', error => {
-      console.log(error)
-      return reject(error)
-    })
-
-    request.write(requestData)
-    request.end()
   })
+
+  if (apiResponse?.error) {
+    program.error(chalk.red.bold(`Upsource: ${apiResponse.error.message}`))
+  }
+
+  const reviewId = apiResponse.result?.reviewId?.reviewId
+  console.log(chalk.green.bold(`Review ${reviewId || ''} successfully created`))
+  if (reviewId) {
+    console.log(chalk.green.bold(`Review link: https://${hostname}/${projectId}/review/${reviewId}`))
+  }
 }

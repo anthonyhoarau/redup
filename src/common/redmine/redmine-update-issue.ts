@@ -8,7 +8,7 @@ export default async function redmineUpdateIssue (issueId: string, issue: Redmin
 
   console.log(chalk.gray(`Updating Redmine status of issue: ${issueId}`))
 
-  return await apiRest<{issue: RedmineIssueRequest}, never>({
+  await apiRest<{issue: RedmineIssueRequest}, never>({
     hostname,
     path: `/issues/${issueId}.json`,
     type: 'PUT',
@@ -17,4 +17,6 @@ export default async function redmineUpdateIssue (issueId: string, issue: Redmin
       'X-Redmine-API-Key': redmineUserToken
     }
   })
+
+  console.log(chalk.red.bold(`Redmine updated: https://${hostname}/issues/${issueId}`))
 }

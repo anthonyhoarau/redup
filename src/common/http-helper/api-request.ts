@@ -40,7 +40,7 @@ export async function apiRest<R = any, T = any> (request: ApiRequest<R>): Promis
       // reject on bad status
       const statusCode = +res.statusCode
       if (statusCode < 200 || statusCode >= 300) {
-        return reject(new Error(`statusCode=${statusCode}`))
+        return reject(new Error(`API response status code: ${statusCode}`))
       }
 
       // cumulate data
