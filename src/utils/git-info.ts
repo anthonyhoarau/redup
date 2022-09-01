@@ -7,10 +7,8 @@ export async function currentBranchName (): Promise<string> {
   const cmd = 'git branch --show-current'
   const { stdout, stderr } = await execPromise(cmd)
   if (stderr !== '') {
-    console.log(`error: ${stderr}`)
     throw new Error(stderr)
   }
-  return 'feature/RM-35489_redmine_review_flow'
   return stdout
 }
 
@@ -18,7 +16,6 @@ export async function headRevisionId (): Promise<string | null> {
   const cmd = 'git rev-parse HEAD'
   const { stdout, stderr } = await execPromise(cmd)
   if (stderr !== '') {
-    console.log(`error: ${stderr}`)
     return null
   }
   return stdout
