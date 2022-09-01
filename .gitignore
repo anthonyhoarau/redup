@@ -113,5 +113,7 @@ dist
 !.vscode/launch.json
 !.vscode/extensions.json
 
+.npmrc
+
 # Custom env file
 .reduprc
