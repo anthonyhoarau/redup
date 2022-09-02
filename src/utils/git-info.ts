@@ -9,7 +9,7 @@ export async function currentBranchName (): Promise<string> {
   if (stderr !== '') {
     throw new Error(stderr)
   }
-  return stdout
+  return stdout.trim()
 }
 
 export async function headRevisionId (): Promise<string | null> {
