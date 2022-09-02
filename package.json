@@ -1,6 +1,6 @@
 {
   "name": "@llioss/redup",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "CLI tools - Bridge between Upsource and Redmine through git repos",
   "main": "dist/index.js",
   "bin": {
