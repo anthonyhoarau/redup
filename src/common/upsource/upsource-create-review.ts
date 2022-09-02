@@ -15,7 +15,7 @@ export default async function upsourceCreateMergeReview (program: Command, branc
     hostname,
     path: '/~rpc/createReview',
     type: 'POST',
-    data: { projectId, branch: branchName, mergeToBranch: 'develop' },
+    data: { projectId, branch: branchName, mergeFromBranch: branchName, mergeToBranch: 'develop' },
     customHeader: {
       Authorization: `Bearer ${upsourceUserToken}`
     }
