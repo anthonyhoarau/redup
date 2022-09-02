@@ -4,7 +4,7 @@ import { UpsourceCreateReviewRequest } from './types/upsource-request'
 import { UpsourceApiResponse } from './types/upsource-response'
 import { Command } from 'commander'
 
-export default async function upsourceCreateMergeReview (program: Command, branchName: string): Promise<void> {
+export default async function upsourceCreateMergeReview (program: Command, branchName: string): Promise<string> {
   const hostname = process.env.UPSOURCE_HOST
   const projectId = process.env.UPSOURCE_PROJECT_ID
   const upsourceUserToken = process.env.UPSOURCE_USER_API_TOKEN
@@ -30,4 +30,5 @@ export default async function upsourceCreateMergeReview (program: Command, branc
   if (reviewId) {
     console.log(chalk.green.bold(`Review link: https://${hostname}/${projectId}/review/${reviewId}`))
   }
+  return reviewId
 }

@@ -22,8 +22,9 @@ async function createReview (program: Command): Promise<void> {
   const branchName = await currentBranchName()
   console.log(chalk.blue(`Create review for branch: ${branchName}`))
 
+  let upsourceReviewId = 'reviewIdNotFound'
   try {
-    await upsourceCreateMergeReview(program, branchName)
+    upsourceReviewId = await upsourceCreateMergeReview(program, branchName)
   } catch (e) {
     const errorMessage: string = (e as Error)?.message || e.toString()
     program.error(chalk.red.bold(`Upsource Review not created for branch ${branchName}: ${errorMessage}`))
@@ -32,7 +33,7 @@ async function createReview (program: Command): Promise<void> {
   const redmineId = extractRedmineIdFromFeatureBranch(program, branchName)
   try {
     await redmineUpdateIssue(redmineId, {
-      notes: `Code review available at https://${process.env.UPSOURCE_HOST}/review/reviewId`,
+      notes: `Code review available at https://${process.env.UPSOURCE_HOST}/review/${upsourceReviewId}`,
       status_id: RedmineStatus.REVIEW_AVAILABLE
     })
   } catch (e) {

@@ -18,5 +18,5 @@ export default async function redmineUpdateIssue (issueId: string, issue: Redmin
     }
   })
 
-  console.log(chalk.red.bold(`Redmine updated: https://${hostname}/issues/${issueId}`))
+  console.log(chalk.green.bold(`Redmine updated: https://${hostname}/issues/${issueId}`))
 }
