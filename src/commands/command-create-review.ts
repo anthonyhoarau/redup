@@ -33,7 +33,7 @@ async function createReview (program: Command): Promise<void> {
   const redmineId = extractRedmineIdFromFeatureBranch(program, branchName)
   try {
     await redmineUpdateIssue(redmineId, {
-      notes: `Code review available at https://${process.env.UPSOURCE_HOST}/review/${upsourceReviewId}`,
+      notes: `Code review available at https://${process.env.UPSOURCE_HOST}/${process.env.UPSOURCE_PROJECT_ID}/review/${upsourceReviewId}`,
       status_id: +process.env.REDMINE_STATUS_ID_NEW_REVIEW ?? RedmineStatus.REVIEW_AVAILABLE
     })
   } catch (e) {
