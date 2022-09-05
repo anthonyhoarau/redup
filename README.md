@@ -19,7 +19,7 @@ The cli create a new Upsource merge review, then update your Redmine status with
 
 ## Configuration
 
-Create a file named `.reduprc` in your git root folder.
+Create a file named `.reduprc` in your git root folder, add it to `.gitignore`, so your confidential info are not shared with others.
 
 Available config are:
 
