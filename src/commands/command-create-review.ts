@@ -34,7 +34,7 @@ async function createReview (program: Command): Promise<void> {
   try {
     await redmineUpdateIssue(redmineId, {
       notes: `Code review available at https://${process.env.UPSOURCE_HOST}/review/${upsourceReviewId}`,
-      status_id: RedmineStatus.REVIEW_AVAILABLE
+      status_id: +process.env.REDMINE_STATUS_ID_NEW_REVIEW ?? RedmineStatus.REVIEW_AVAILABLE
     })
   } catch (e) {
     const errorMessage: string = (e as Error)?.message || e.toString()
