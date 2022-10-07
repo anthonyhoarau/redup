@@ -28,6 +28,6 @@ export async function headRevisionId (): Promise<string | null> {
  */
 export async function isValidBranch (): Promise<boolean> {
   const branchName = await currentBranchName()
-  const pattern = /feature\//
+  const pattern = /(feat(ure)?|(bug)?fix|chore)\//
   return pattern.exec(branchName) != null
 }
