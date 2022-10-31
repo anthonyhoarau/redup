@@ -1,8 +1,8 @@
 import * as chalk from 'chalk'
 import { Command } from 'commander'
 
-export function extractRedmineIdFromFeatureBranch (program: Command, branchName: string): string {
-  const pattern = /feature\/(RM|rm)-?(?<issueId>\d+)/
+export function extractRedmineIdFromBranch (program: Command, branchName: string): string {
+  const pattern = /(feat(ure)?|(bug)?fix|chore)\/(RM|rm)-?(?<issueId>\d+)/
   const redmineId = pattern.exec(branchName)?.groups?.issueId
 
   if (redmineId == null) {

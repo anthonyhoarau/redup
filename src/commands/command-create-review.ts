@@ -1,6 +1,6 @@
 import { currentBranchName } from '../utils/git-info'
 import * as chalk from 'chalk'
-import { extractRedmineIdFromFeatureBranch } from '../common/redmine/utils'
+import { extractRedmineIdFromBranch } from '../common/redmine/utils'
 import redmineUpdateIssue from '../common/redmine/redmine-update-issue'
 import { RedmineStatus } from '../common/redmine/types/redmine-status'
 import { Command } from 'commander'
@@ -30,7 +30,7 @@ async function createReview (program: Command): Promise<void> {
     program.error(chalk.red.bold(`Upsource Review not created for branch ${branchName}: ${errorMessage}`))
   }
 
-  const redmineId = extractRedmineIdFromFeatureBranch(program, branchName)
+  const redmineId = extractRedmineIdFromBranch(program, branchName)
   try {
     await redmineUpdateIssue(redmineId, {
       notes: `Code review available at https://${process.env.UPSOURCE_HOST}/${process.env.UPSOURCE_PROJECT_ID}/review/${upsourceReviewId}`,
